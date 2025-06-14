@@ -1,0 +1,19 @@
+class EditNoteActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        setContent {
+            val noteState = remember { NoteState() }
+            
+            MyAppTheme {
+                EditNoteScreen(
+                    state = noteState,
+                    onSave = {
+                        // حفظ الملاحظة هنا
+                        finish()
+                    }
+                )
+            }
+        }
+    }
+}
