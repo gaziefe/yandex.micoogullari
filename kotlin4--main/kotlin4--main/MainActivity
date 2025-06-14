@@ -1,0 +1,17 @@
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        setContent {
+            val navController = rememberNavController()
+            val viewModel: NotesViewModel = viewModel()
+            
+            NotesAppTheme {
+                NotesNavGraph(
+                    navController = navController,
+                    viewModel = viewModel
+                )
+            }
+        }
+    }
+}
