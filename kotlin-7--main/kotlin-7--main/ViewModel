@@ -1,0 +1,19 @@
+@HiltViewModel
+class NotesViewModel @Inject constructor(
+    private val remoteDataSource: NotesRemoteDataSource,
+    private val localDataSource: NotesLocalDataSource
+) : ViewModel() {
+
+    fun syncNotes() {
+        viewModelScope.launch {
+            try {
+                val remoteNotes = remoteDataSource.getNotes()
+                remoteNotes.forEach { noteDto ->
+                    localDataSource.saveNote(noteDto.toNote())
+                }
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+}
