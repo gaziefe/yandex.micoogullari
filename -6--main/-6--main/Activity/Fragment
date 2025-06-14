@@ -1,0 +1,24 @@
+@AndroidEntryPoint
+class NotesListActivity : AppCompatActivity() {
+    private val viewModel: NotesViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        
+        setContent {
+            val notesState by viewModel.notesState.collectAsState()
+            
+            when (notesState) {
+                is NotesState.Loading -> LoadingScreen()
+                is NotesState.Success -> NotesListScreen(
+                    notes = (notesState as NotesState.Success).notes,
+                    onRefresh = { viewModel.syncNotes() }
+                )
+                is NotesState.Error -> ErrorScreen(
+                    message = (notesState as NotesState.Error).message,
+                    onRetry = { viewModel.loadNotes() }
+                )
+            }
+        }
+    }
+}
